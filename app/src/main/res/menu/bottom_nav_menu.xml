@@ -6,17 +6,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/baseline_home_24"
-        android:title="Home" />
+        android:title="Početna" />
     <item
         android:id="@+id/message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/baseline_message_24"
-        android:title="Message" />
+        android:title="Poruke" />
     <item
         android:id="@+id/profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/baseline_person_2_24"
-        android:title="Profile" />
+        android:title="Moj Profil" />
 </menu>

@@ -57,6 +57,7 @@ public class SendMessageActivity extends AppCompatActivity {
 
                 DatabaseReference newMessageRef = mainCollectionRef.child(newMessageId);
                 Map<String, Object> messageData = new HashMap<>();
+
                 messageData.put("emailPosiljaoca", emailPosiljaoca);
                 messageData.put("emailPrimaoca", emailPrimaoca);
                 messageData.put("poruka", sadrzajPoruke);

@@ -1,6 +1,8 @@
 package com.example.chatapp;
 
 import android.content.Intent;
+import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,15 +16,17 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -108,33 +112,108 @@ public class MessageFragment extends Fragment {
 
         DatabaseReference mainCollectionRef = FirebaseDatabase.getInstance().getReference("Poruke");
 
+        // ... Ostatak koda fragmenta ...
+
+// ... Ostatak koda fragmenta ...
+
         mainCollectionRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (isAdded()) {
-                        for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
-                            String emailPrimaoca = messageSnapshot.child("emailPrimaoca").getValue(String.class);
+                    for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
+                        String emailPrimaoca = messageSnapshot.child("emailPrimaoca").getValue(String.class);
 
-                            if (emailPrimaoca.equals(userEmailPrimaoca)) {
-                                // Poruka odgovara e-mailu primaoca, pa je prikažite
-                                String emailPosiljaoca = messageSnapshot.child("emailPosiljaoca").getValue(String.class);
-                                String porukaText = messageSnapshot.child("poruka").getValue(String.class);
+                        if (emailPrimaoca.equals(userEmailPrimaoca)) {
+                            String emailPosiljaoca = messageSnapshot.child("emailPosiljaoca").getValue(String.class);
+                            String porukaText = messageSnapshot.child("poruka").getValue(String.class);
 
-                                TextView messageTextView = new TextView(getContext());
-                                messageTextView.setText("Od: " + emailPosiljaoca + "\nPoruka: " + porukaText + "\n");
-                                messageContainer.addView(messageTextView);
-                    }
+
+                            // Kreiranje slike posiljaoca koristeći resurs iz drawable foldera
+                            RoundedImage profileImageView = new RoundedImage(getContext());
+
+                            int width = getResources().getDimensionPixelSize(R.dimen.profile_image_width);
+                            int height = getResources().getDimensionPixelSize(R.dimen.profile_image_height);
+                            profileImageView.setLayoutParams(new LinearLayout.LayoutParams(150, 150));
+
+                            String imageUrl = messageSnapshot.child("imageUrl").getValue(String.class);
+
+                            // Uzmi email posiljaoca iz baze podataka
+                            String storagePath = "profile_images/" + emailPosiljaoca + "/profile.jpg";
+
+                            // Create a StorageReference and load the image
+                            StorageReference storageRef = FirebaseStorage.getInstance().getReference(storagePath);
+
+                            storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    progressBar.setVisibility(View.VISIBLE);
+                                    String imageUrl = uri.toString();
+
+                                    // Use Glide to load the image
+                                    Glide.with(getContext())
+                                            .load(imageUrl)
+                                            .into(profileImageView);
+                                    progressBar.setVisibility(View.GONE);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    // Handle the failure to get the download URL (e.g., log an error or show a placeholder image)
+                                    Log.e("GlideError", "Failed to get image download URL: " + e.getMessage());
+                                    progressBar.setVisibility(View.GONE);
+                                }
+                            });
+// Create layout for each message with a vertical orientation
+                            // Create a top-level horizontal layout
+                            LinearLayout mainLayout = new LinearLayout(getContext());
+                            mainLayout.setOrientation(LinearLayout.HORIZONTAL);
+
+// Create layout for the message details (email and message) with vertical orientation
+                            LinearLayout messageDetailsLayout = new LinearLayout(getContext());
+                            messageDetailsLayout.setOrientation(LinearLayout.VERTICAL);
+
+
+// Create a horizontal layout for email and name
+                            LinearLayout emailNameLayout = new LinearLayout(getContext());
+                            emailNameLayout.setOrientation(LinearLayout.HORIZONTAL);
+
+// Create text views for email and name
+                            TextView emailTextView = new TextView(getContext());
+                            emailTextView.setText(emailPosiljaoca);
+                            emailTextView.setTypeface(null, Typeface.BOLD); // Make text bold
+
+// Create a new TextView for message
+                            TextView messageTextView = new TextView(getContext());
+                            messageTextView.setText(porukaText);
+
+// Add the elements to the emailNameLayout (horizontally)
+                            emailNameLayout.addView(emailTextView);
+
+// Add the elements to the messageDetailsLayout (vertically)
+                            messageDetailsLayout.addView(emailNameLayout);
+                            messageDetailsLayout.addView(messageTextView);
+
+// Add the profile image and message details to the mainLayout (horizontally)
+                            mainLayout.addView(profileImageView);
+                            mainLayout.addView(messageDetailsLayout);
+
+// Add the mainLayout to the message container
+                            messageContainer.addView(mainLayout);
+
+
+
                         }
-
-                        progressBar.setVisibility(View.GONE);
                     }
 
+                    progressBar.setVisibility(View.GONE);
+                }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Pogreška pri dohvaćanju podataka
             }
         });
+
 
 
 //        myRef.addValueEventListener(new ValueEventListener() {
