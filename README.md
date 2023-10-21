@@ -7,13 +7,13 @@ Chat App je Android aplikacija za dopisivanje koja omogućava korisnicima da se 
 
 ## Fotografije
 
-# Poruke
+Poruke
 -----
 <img src="https://github.com/rile037/ChatApp/assets/60843900/4164baa3-1b46-49e3-ab8c-3229f3d9331d" width="300" height="600" alt="Poruke">
 
 -----
 
-# Moj profil
+Moj profil
 -----
 <img src="https://github.com/rile037/ChatApp/assets/60843900/c6f369f2-8614-4fdf-afb2-d19eaa9787d8" width="300" height="600" alt="Moj profil">
 
