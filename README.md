@@ -40,12 +40,12 @@ Ova aplikacija je dostupna pod MIT Licencom. Svi korisnici su dobrodošli da kor
 
 # Poruke
 -----
-![Untitled design (5)](https://github.com/rile037/ChatApp/assets/60843900/4164baa3-1b46-49e3-ab8c-3229f3d9331d)
+<img src="https://github.com/rile037/ChatApp/assets/60843900/4164baa3-1b46-49e3-ab8c-3229f3d9331d" width="300" height="600" alt="Poruke">
 
 -----
 
 # Moj profil
 -----
-![Screenshot_2023-10-21-09-26-14-849_com example chatapp](https://github.com/rile037/ChatApp/assets/60843900/c6f369f2-8614-4fdf-afb2-d19eaa9787d8)
+<img src="https://github.com/rile037/ChatApp/assets/60843900/c6f369f2-8614-4fdf-afb2-d19eaa9787d8" width="300" height="600" alt="Moj profil">
 
 -----
